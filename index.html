@@ -11,80 +11,82 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
-    <header>
-        <h2 class="logo">Welcome</h2>
-        <div class="menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <nav class="navigation">
-            <a href="#">Home</a>
-            <a href="#">Explore</a>
-            <a href="#">About us</a>
-            <a href="#">Samples</a>
-            <button class="btn-popUp">Login</button>
-        </nav>
-    </header>
+<header>
+    <h2 class="logo">NghaizBlog</h2>
+    <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <nav class="navigation">
+        <a href="/" data-navigo>Home</a>
+        <a href="#">Explore</a>
+        <a href="#">About us</a>
+        <a href="#">Donate</a>
+        <button class="btn-popUp">Login</button>
+    </nav>
+</header>
 
-    <div class="wrapper">
+<div id="app-content"></div>
+
+<div class="wrapper">
         <span class="icon-close">
             <ion-icon name="close"></ion-icon>
         </span>
 
-        <div class="form-box login">
-            <h2>Login</h2>
-            <form action="#">
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="mail"></ion-icon></span>
-                    <input type="email" required placeholder=" ">
-                    <label>Email</label>
-                </div>
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                    <input type="password" required placeholder=" ">
-                    <label>Password</label>
-                </div>
-                <div class="remember">
-                    <label><input type="checkbox">Remember me</label>
-                    <a href="#">Forgot Password?</a>
-                </div>
-                <button type="submit" class="btn-form">Login</button>
-                <div class="login-register">
-                    <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
-                </div>
-            </form>
-        </div>
-
-        <div class="form-box register">
-            <h2>Registration</h2>
-            <form action="#">
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="person"></ion-icon></span>
-                    <input type="text" required placeholder=" ">
-                    <label>Username</label>
-                </div>
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="mail"></ion-icon></span>
-                    <input type="email" required placeholder=" ">
-                    <label>Email</label>
-                </div>
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                    <input type="password" required placeholder=" ">
-                    <label>Password</label>
-                </div>
-                <div class="remember">
-                    <label><input type="checkbox">I agree to the terms and conditions</label>
-                </div>
-                <button type="submit" class="btn-form">Register</button>
-                <div class="login-register">
-                    <p>Already have an account? <a href="#" class="login-link">Login</a></p>
-                </div>
-            </form>
-        </div>
+    <div class="form-box login">
+        <h2>Login</h2>
+        <form id="login-form">
+            <div class="input-box">
+                <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                <input type="email" id="login-email" required placeholder=" ">
+                <label>Email</label>
+            </div>
+            <div class="input-box">
+                <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                <input type="password" id="login-password" required placeholder=" ">
+                <label>Password</label>
+            </div>
+            <div class="remember">
+                <label><input type="checkbox">Remember me</label>
+                <a href="#">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn-form">Login</button>
+            <div class="login-register">
+                <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+            </div>
+        </form>
     </div>
 
-    <script src="/src/main.js"></script>
+    <div class="form-box register">
+        <h2>Registration</h2>
+        <form id="register-form">
+            <div class="input-box">
+                <span class="icon"><ion-icon name="person"></ion-icon></span>
+                <input type="text" id="register-username" required placeholder=" ">
+                <label>Username</label>
+            </div>
+            <div class="input-box">
+                <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                <input type="email" id="register-email" required placeholder=" ">
+                <label>Email</label>
+            </div>
+            <div class="input-box">
+                <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                <input type="password" id="register-password" required placeholder=" ">
+                <label>Password</label>
+            </div>
+            <div class="remember">
+                <label><input type="checkbox" required>I agree to the terms and conditions</label>
+            </div>
+            <button type="submit" class="btn-form">Register</button>
+            <div class="login-register">
+                <p>Already have an account? <a href="#" class="login-link">Login</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
 </body>
 </html>
