@@ -436,7 +436,7 @@ function createCherryBlossoms() {
     const container = document.querySelector('.cherry-blossom-container');
     const petalCount = 35;
 
-    const petalImagePath = '/src/picture/cherry-petal.png';
+    const petalImagePath = '/public/cherry-petal.png';
 
     for (let i = 0; i < petalCount; i++) {
         createPetal(container, petalImagePath);
