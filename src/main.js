@@ -9,9 +9,12 @@ const registerLink = document.querySelector('.register-link');
 const iconClose = document.querySelector('.icon-close');
 const menuToggle = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('.navigation');
+const overlay = document.querySelector('.overlay');
 
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
+const loginError = document.getElementById('login-error');
+const registerError = document.getElementById('register-error');
 
 const checkAuth = () => {
     return localStorage.getItem('currentUser') !== null;
@@ -20,6 +23,23 @@ const checkAuth = () => {
 const getCurrentUser = () => {
     const user = localStorage.getItem('currentUser');
     return user ? JSON.parse(user) : null;
+};
+
+const showError = (element, message) => {
+    element.textContent = message;
+    element.classList.add('show');
+
+    setTimeout(() => {
+        element.classList.remove('show');
+    }, 5000);
+};
+
+const showSuccessButton = (button) => {
+    button.classList.add('success');
+
+    setTimeout(() => {
+        button.classList.remove('success');
+    }, 2000);
 };
 
 const renderHomePage = () => {
@@ -92,15 +112,15 @@ const renderHomePage = () => {
             <div class="welcome-footer animate-fade" style="animation-delay: 0.8s">
                 <div class="stats">
                     <div class="stat-item">
-                        <span class="stat-number">🗿1.2K+</span>
+                        <span class="stat-number">1.2K+</span>
                         <span class="stat-label">Users</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">🌟4.8</span>
+                        <span class="stat-number">4.8</span>
                         <span class="stat-label">Rating</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">☎️24/7</span>
+                        <span class="stat-number">24/7</span>
                         <span class="stat-label">Support</span>
                     </div>
                 </div>
@@ -114,11 +134,13 @@ const renderHomePage = () => {
         document.getElementById('home-login-btn').addEventListener('click', () => {
             wrapper.classList.add('active-popup');
             wrapper.classList.remove('active');
+            overlay.classList.add('active');
         });
 
         document.getElementById('home-register-btn').addEventListener('click', () => {
             wrapper.classList.add('active-popup');
             wrapper.classList.add('active');
+            overlay.classList.add('active');
         });
     }
 
@@ -131,6 +153,7 @@ const renderProfilePage = () => {
     if (!isLoggedIn) {
         router.navigate('/');
         wrapper.classList.add('active-popup');
+        overlay.classList.add('active');
         return;
     }
 
@@ -240,6 +263,7 @@ const updateNavigation = () => {
 
         loginBtn.addEventListener('click', () => {
             wrapper.classList.add('active-popup');
+            overlay.classList.add('active');
             navigation.classList.remove('active');
             menuToggle.classList.remove('active');
         });
@@ -272,6 +296,7 @@ loginLink.addEventListener('click', (e) => {
 
 iconClose.addEventListener('click', () => {
     wrapper.classList.remove('active-popup');
+    overlay.classList.remove('active');
 });
 
 menuToggle.addEventListener('click', () => {
@@ -287,28 +312,38 @@ navLinks.forEach(link => {
     });
 });
 
+overlay.addEventListener('click', () => {
+    wrapper.classList.remove('active-popup');
+    overlay.classList.remove('active');
+});
+
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
+    const loginButton = loginForm.querySelector('.btn-form');
 
     const users = JSON.parse(localStorage.getItem('users') || '[]');
-
     const user = users.find(u => u.email === email && u.password === password);
 
     if (user) {
-        localStorage.setItem('currentUser', JSON.stringify({
-            username: user.username,
-            email: user.email
-        }));
+        showSuccessButton(loginButton);
 
-        wrapper.classList.remove('active-popup');
-        loginForm.reset();
-        updateNavigation();
-        renderHomePage();
+        setTimeout(() => {
+            localStorage.setItem('currentUser', JSON.stringify({
+                username: user.username,
+                email: user.email
+            }));
+
+            wrapper.classList.remove('active-popup');
+            overlay.classList.remove('active');
+            loginForm.reset();
+            updateNavigation();
+            renderHomePage();
+        }, 1500);
     } else {
-        alert('Email hoặc mật khẩu không đúng!');
+        showError(loginError, 'Email hoặc mật khẩu không đúng!');
     }
 
     const auth = {
@@ -327,6 +362,9 @@ loginForm.addEventListener('submit', (e) => {
         .then(data => {
             console.log(data);
         })
+        .catch(error => {
+            console.error('API error:', error);
+        });
 });
 
 registerForm.addEventListener('submit', (e) => {
@@ -335,25 +373,32 @@ registerForm.addEventListener('submit', (e) => {
     const username = document.getElementById('register-username').value;
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
+    const registerButton = registerForm.querySelector('.btn-form');
 
     const users = JSON.parse(localStorage.getItem('users') || '[]');
 
     if (users.some(user => user.email === email)) {
-        alert('Email đã được đăng ký, vui lòng sử dụng email khác!');
+        showError(registerError, 'Email đã được đăng ký, vui lòng sử dụng email khác!');
         return;
     }
 
-    users.push({
-        username,
-        email,
-        password
-    });
+    showSuccessButton(registerButton);
 
-    localStorage.setItem('users', JSON.stringify(users));
+    setTimeout(() => {
+        users.push({
+            username,
+            email,
+            password
+        });
 
-    registerForm.reset();
-    wrapper.classList.remove('active');
-    alert('Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.');
+        localStorage.setItem('users', JSON.stringify(users));
+
+        registerForm.reset();
+        wrapper.classList.remove('active');
+
+        showError(loginError, 'Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.');
+        loginError.style.color = '#4CAF50';
+    }, 1500);
 });
 
 window.addEventListener('scroll', () => {
@@ -368,5 +413,64 @@ window.addEventListener('scroll', () => {
         header.style.padding = '20px 5%';
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    wrapper.classList.remove('active-popup');
+    overlay.classList.remove('active');
+
+    const existingEvents = window.onload;
+
+    window.onload = function() {
+        if (existingEvents) {
+            existingEvents();
+        }
+        createCherryBlossoms();
+    };
+
+    if (document.readyState === 'complete') {
+        createCherryBlossoms();
+    }
+});
+
+function createCherryBlossoms() {
+    const container = document.querySelector('.cherry-blossom-container');
+    const petalCount = 35;
+
+    const petalImagePath = '/src/picture/cherry-petal.png';
+
+    for (let i = 0; i < petalCount; i++) {
+        createPetal(container, petalImagePath);
+    }
+}
+
+function createPetal(container, imagePath) {
+    const petal = document.createElement('div');
+
+    const size = Math.random() * 30 + 20;
+    const left = Math.random() * 100;
+    const fallDuration = Math.random() * 8 + 10;
+    const swayDuration = Math.random() * 6 + 3;
+    const rotateDuration = Math.random() * 10 + 8;
+    const delay = Math.random() * 1.5;
+    const rotateDirection = Math.random() > 0.5 ? 'normal' : 'reverse';
+    const rotateStartAngle = Math.random() * 360;
+
+    petal.classList.add('petal');
+    petal.style.backgroundImage = `url('${imagePath}')`;
+    petal.style.width = `${size}px`;
+    petal.style.height = `${size}px`;
+    petal.style.left = `${left}%`;
+    petal.style.animationDuration = `${fallDuration}s, ${swayDuration}s, ${rotateDuration}s`;
+    petal.style.animationDelay = `${delay}s, ${delay}s, ${delay}s`;
+    petal.style.animationDirection = `normal, alternate, ${rotateDirection}`;
+    petal.style.transform = `rotate(${rotateStartAngle}deg)`;
+
+    container.appendChild(petal);
+
+    setTimeout(() => {
+        petal.remove();
+        createPetal(container, imagePath);
+    }, (fallDuration + delay) * 1000);
+}
 
 updateNavigation();

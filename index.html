@@ -11,6 +11,9 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
+<div class="cherry-blossom-container"></div>
+<div class="overlay"></div>
+
 <header>
     <h2 class="logo">NghaizBlog</h2>
     <div class="menu-toggle">
@@ -30,9 +33,9 @@
 <div id="app-content"></div>
 
 <div class="wrapper">
-        <span class="icon-close">
-            <ion-icon name="close"></ion-icon>
-        </span>
+    <span class="icon-close">
+        <ion-icon name="close"></ion-icon>
+    </span>
 
     <div class="form-box login">
         <h2>Login</h2>
@@ -47,11 +50,17 @@
                 <input type="password" id="login-password" required placeholder=" ">
                 <label>Password</label>
             </div>
+            <div class="error-message" id="login-error"></div>
             <div class="remember">
                 <label><input type="checkbox">Remember me</label>
                 <a href="#">Forgot Password?</a>
             </div>
-            <button type="submit" class="btn-form">Login</button>
+            <button type="submit" class="btn-form">
+                <span>Login</span>
+                <div class="success-animation">
+                    <ion-icon name="checkmark-circle"></ion-icon>
+                </div>
+            </button>
             <div class="login-register">
                 <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
             </div>
@@ -76,10 +85,16 @@
                 <input type="password" id="register-password" required placeholder=" ">
                 <label>Password</label>
             </div>
+            <div class="error-message" id="register-error"></div>
             <div class="remember">
                 <label><input type="checkbox" required>I agree to the terms and conditions</label>
             </div>
-            <button type="submit" class="btn-form">Register</button>
+            <button type="submit" class="btn-form">
+                <span>Register</span>
+                <div class="success-animation">
+                    <ion-icon name="checkmark-circle"></ion-icon>
+                </div>
+            </button>
             <div class="login-register">
                 <p>Already have an account? <a href="#" class="login-link">Login</a></p>
             </div>
